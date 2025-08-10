@@ -1,7 +1,7 @@
 import tkinter as tk
 import openpyxl
 import os.path
-from tkinter import messagebox
+from tkinter import messagebox, filedialog 
 
 
 class EmployeeManager:
@@ -13,7 +13,23 @@ class EmployeeManager:
         self.master.title("مدیریت کارکنان")
         self.master.geometry('800x600')
 
-        self.filepath = 'employees.xlsx'
+        self.filepath = None
+
+
+
+        file_frame = tk.Frame(self.master, pady=5)
+        file_frame.pack(fill='x', padx=10)
+
+
+        btn_select_file = tk.Button(file_frame, text='انتخاب یا ایجاد فایل داده', command=self.select_file)
+        btn_select_file.pack(side='left')
+
+
+        self.lbl_filepathe = tk.Label(file_frame, text='هنوز فایلی انتخاب نشده است', fg='blue')
+        self.lbl_filepathe.pack(side='left', padx=10)
+
+
+
 
 
         input_frame = tk.Frame(self.master, pady=10)
@@ -94,7 +110,34 @@ class EmployeeManager:
         btn_display.pack(side='left')
 
 
+
+
+    def select_file(self):
+
+        path = filedialog.asksaveasfilename(
+            defaultextension=".xlsx",
+            filetypes=[("Excel files", "*.xlsx"), ("All files", "*.*")]
+        )
+
+        if path: 
+            self.filepath = path
+            self.lbl_filepathe.config(text=f"فایل فعلی: {path}", fg="green")
+            self.display_employees
+
+    def _check_filepath(self):
+        if not self.filepath:
+            messagebox.showwarning('لطفا ابتدا یک فایل داده را انتخاب یا ایجاد نمایید')
+            return False
+        return True
+
+
+
+
+
     def save_employee_data(self):
+
+        if not self._check_filepath():
+            return
 
 
         employee_id = self.ent_id.get()
@@ -131,6 +174,9 @@ class EmployeeManager:
     # برای نمایش اطلاعات
     def display_employees(self):
 
+        if not self._check_filepath():
+            return
+
         
         self.listbox.delete(0, tk.END)
 
@@ -152,9 +198,10 @@ class EmployeeManager:
 
 
 
-
-
     def search_employees(self):
+
+        if not self._check_filepath():
+            return
 
 
         # خواندن اطلاعات از رابط کاربری
@@ -201,9 +248,6 @@ class EmployeeManager:
             self.listbox.insert(tk.END, 'هیچ نتیجه ای یافت نشد')
 
             
-
-
-
 
 
 
