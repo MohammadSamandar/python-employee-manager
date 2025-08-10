@@ -33,7 +33,6 @@ A simple desktop application for managing employee records, built with Python an
 
 * **Update Employee Records**: An interface to select and edit the information of an existing employee.
 * **Delete Employee Records**: Functionality to remove an employee from the records.
-* **Dynamic File Path**: Allow the user to specify the path and name of the data file through the GUI, instead of using a hardcoded path.
 
 ## Project Structure
 
